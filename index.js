@@ -54,12 +54,12 @@ io.on("connection", (socket) => {
   })
 
   socket.on("request-stream",(data)=>{
-    console.log("request-stream recieve : ");
+    console.log("request-stream recieve from ",data.sender);
     io.to(broadcasterID).emit("send-stream",data)
   })
 
   socket.on("stream",(data)=>{
-    console.log("stream recieve : ");
+    console.log("stream recieve for ",data.to);
     io.to(data.to).emit("recieve-stream",data.signal)
   })
 
