@@ -38,24 +38,30 @@ const io = socketIO(server,{
 // Define a global variable to store the broadcaster's stream
 let broadcasterStream;
 
-const room_loc = []
+const room_loc = {}
 
-let broadcasterID;
+// let broadcasterID;
 
 io.on("connection", (socket) => {
   console.log("New Connection : ",socket.id);
-	// socket.emit("me", socket.id);
+
+  // socket.emit("me", socket.id);
+
+  socket.on("viewer",(data)=>{
+    console.log("One viewer added ",data.id);
+  })
 
   socket.on('broadcaster', (roomName) => {
     console.log("Broadcaster recieve : ",roomName," ",socket.id);
-    broadcasterID = socket.id;
+    room_loc[roomName]=socket.id;
+    // broadcasterID = socket.id;
     // socket.join(roomID);
     // room_loc.push({"roomName":roomName,"roomID":roomID})
   })
 
   socket.on("request-stream",(data)=>{
     console.log("request-stream recieve from ",data.sender);
-    io.to(broadcasterID).emit("send-stream",data)
+    io.to(room_loc[data.to]).emit("send-stream",data)
   })
 
   socket.on("stream",(data)=>{
