@@ -47,8 +47,8 @@ io.on("connection", (socket) => {
 
   // socket.emit("me", socket.id);
 
-  socket.on("viewer",(data)=>{
-    console.log("One viewer added ",data.id);
+  socket.on("viewer",()=>{
+    io.to(socket.id).emit("receiveID",({id:socket.id}))
   })
 
   socket.on('broadcaster', (roomName) => {
